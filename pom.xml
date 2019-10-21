@@ -19,13 +19,6 @@
 		<java.version>1.8</java.version>
 		<sonar.coverage.exclusions>**/entity/*,**/dto/*,**/api/*,**/util/*,**/exception/*,**/config/*,**/utils/*,**/schedulder/*,**/repository/*</sonar.coverage.exclusions>
 	</properties>
-	
-	<distributionManagement>
-  		<snapshotRepository>
-    			<id>nexus</id>
-    			<url>http://13.126.0.41:8081/nexus/content/repositories/snapshots/</url>
-  		</snapshotRepository>
-	</distributionManagement>
 
 	<dependencies>
 		<dependency>
