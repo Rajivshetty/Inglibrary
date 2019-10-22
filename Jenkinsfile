@@ -5,8 +5,24 @@ node('master'){
               }
    
    stage('Code analysis'){
-             sh '/opt/maven/bin/mvn clean verify sonar:sonar -Dsonar.password=admin -Dsonar.login=admin'
+                  withSonarQubeEnv('sonar') 
+                  {
+                        sh '/opt/maven/bin/mvn clean package sonar:sonar -Dsonar.password=admin -Dsonar.login=admin'
+                  }
          }
+  
+   stage("Quality Gate")
+         {
+                  timeout(time: 1, unit: 'HOURS') 
+                  { 
+                        def qg = waitForQualityGate()
+                        if (qg.status != 'OK') 
+                        {
+                            error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                        }
+                  }
+         }
+
    stage('Build'){
              sh '/opt/maven/bin/mvn clean install'
          }
