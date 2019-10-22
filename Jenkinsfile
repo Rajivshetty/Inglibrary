@@ -1,7 +1,7 @@
 node('master'){
    
    stage('Git checkout'){
-                  git 'https://github.com/Rajivshetty/Inglibrary.git'
+                  git 'https://github.com/Rajivshetty/Inglibrary-backend.git'
               }
    
    stage('Code analysis'){
