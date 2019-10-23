@@ -17,7 +17,7 @@ node('master'){
                   timeout(time: 30, unit: 'SECONDS') 
                   { 
                         def qg = waitForQualityGate()
-                        if (qg.status != ' ') 
+                        if (qg.status != 'failed') 
                         {
                             error "Pipeline aborted due to quality gate failure: ${qg.status}"
                         }
