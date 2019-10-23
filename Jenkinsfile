@@ -7,17 +7,10 @@ node('master'){
    
    stage('Build')
          {
-                  sh '/opt/maven/bin/mvn clean verify sonar:sonar'
-         }
-   
-   stage('Code analysis')
-         {
-                  withSonarQubeEnv('sonar') 
+            withSonarQubeEnv('sonar') 
                   {
-                        sh '/opt/maven/bin/mvn clean package sonar:sonar -Dsonar.password=admin -Dsonar.login=admin'
-                  }
+                  sh '/opt/maven/bin/mvn clean verify sonar:sonar -Dsonar.password=admin -Dsonar.login=admin'
          }
-  
    stage("Quality Gate")
          {
                   timeout(time: 30, unit: 'SECONDS') 
@@ -35,7 +28,7 @@ node('master'){
              sh '/opt/maven/bin/mvn clean deploy '
          }
       
-      stage('Execution')
+      stage('Run the application')
          {
              sh 'export JENKINS_NODE_COOKIE=dontKillMe ;nohup java -Dspring.profiles.active=dev -jar $WORKSPACE/target/*.jar &'
          }
