@@ -4,6 +4,10 @@ node('master'){
                   git 'https://github.com/Rajivshetty/Inglibrary-backend.git'
               }
    
+   stage('Build'){
+             sh '/opt/maven/bin/mvn clean verify sonar:sonar'
+         }
+   
    stage('Code analysis'){
                   withSonarQubeEnv('sonar') 
                   {
@@ -11,8 +15,7 @@ node('master'){
                   }
          }
   
-   stage("Quality Gate")
-         {
+   stage("Quality Gate"){
                   timeout(time: 30, unit: 'SECONDS') 
                   { 
                         def qg = waitForQualityGate()
@@ -21,17 +24,12 @@ node('master'){
                             error "Pipeline aborted due to quality gate failure: ${qg.status}"
                         }
                   }
-         }
-
-   stage('Build'){
-             sh '/opt/maven/bin/mvn clean install'
-         }
-
-   stage('Execution'){
-             sh 'export JENKINS_NODE_COOKIE=dontKillMe ;nohup java -Dspring.profiles.active=dev -jar $WORKSPACE/target/*.jar &'
-         }
    
    stage('Deploy'){
              sh '/opt/maven/bin/mvn clean deploy '
+         }
+      
+      stage('Execution'){
+             sh 'export JENKINS_NODE_COOKIE=dontKillMe ;nohup java -Dspring.profiles.active=dev -jar $WORKSPACE/target/*.jar &'
          }
 }
