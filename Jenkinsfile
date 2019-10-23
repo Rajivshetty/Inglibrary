@@ -10,6 +10,7 @@ node('master'){
             withSonarQubeEnv('sonar') 
                   {
                   sh '/opt/maven/bin/mvn clean verify sonar:sonar -Dsonar.password=admin -Dsonar.login=admin'
+                  }
          }
    stage("Quality Gate")
          {
