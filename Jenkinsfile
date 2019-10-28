@@ -12,8 +12,8 @@ node('master'){
                   sh '/opt/maven/bin/mvn clean verify sonar:sonar -Dsonar.password=admin -Dsonar.login=admin'
                   }
          }
-   stage('Quality Gate')
-         {
+/*   stage('Quality Gate')
+   {
                   timeout(time: 30, unit: 'SECONDS') 
                   { 
                         def qg = waitForQualityGate()
@@ -23,7 +23,7 @@ node('master'){
                         }
                   }
          }
-   
+  */ 
    stage('Deploy')
          {
              sh '/opt/maven/bin/mvn clean deploy '
